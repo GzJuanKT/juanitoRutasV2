@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="juanitoVersionDosPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>juandavidramos.entidades.Colegio</class>
+    <class>juandavidramos.entidades.Tutor</class>
+    <class>juandavidramos.entidades.Padrefamilia</class>
+    <class>juandavidramos.entidades.Estudiante</class>
+    <class>juandavidramos.entidades.Reporte</class>
+    <class>juandavidramos.entidades.Buse</class>
+    <class>juandavidramos.entidades.Horario</class>
+    <class>juandavidramos.entidades.Barrio</class>
+    <class>juandavidramos.entidades.Conductor</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mydb?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="J@nda.1110"/>
+    </properties>
+  </persistence-unit>
+</persistence>
