@@ -48,7 +48,7 @@ public class Horario implements Serializable {
     @Column(name = "HoraLLegada")
     private String horaLLegada;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "horariosidHorarios")
-    private List<Buse> buseList;
+    private List<Bus> buseList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "horariosidHorarios")
     private List<Estudiante> estudianteList;
 
@@ -98,11 +98,11 @@ public class Horario implements Serializable {
         this.horaLLegada = horaLLegada;
     }
 
-    public List<Buse> getBuseList() {
+    public List<Bus> getBuseList() {
         return buseList;
     }
 
-    public void setBuseList(List<Buse> buseList) {
+    public void setBuseList(List<Bus> buseList) {
         this.buseList = buseList;
     }
 

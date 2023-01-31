@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to editar this template
  */
 package juandavidramos.daos;
 
@@ -21,9 +21,9 @@ import juandavidramos.entidades.Reporte;
  *
  * @author juand
  */
-public class PadrefamiliaJpaController implements Serializable {
+public class DaoPadreFamilia implements Serializable {
 
-    public PadrefamiliaJpaController(EntityManagerFactory emf) {
+    public DaoPadreFamilia(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -32,7 +32,7 @@ public class PadrefamiliaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Padrefamilia padrefamilia) {
+    public void agregar(Padrefamilia padrefamilia) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -64,7 +64,7 @@ public class PadrefamiliaJpaController implements Serializable {
         }
     }
 
-    public void edit(Padrefamilia padrefamilia) throws NonexistentEntityException, Exception {
+    public void editar(Padrefamilia padrefamilia) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -104,7 +104,7 @@ public class PadrefamiliaJpaController implements Serializable {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 Integer id = padrefamilia.getIdPadreFamilia();
-                if (findPadrefamilia(id) == null) {
+                if (buscarPadrefamilia(id) == null) {
                     throw new NonexistentEntityException("The padrefamilia with id " + id + " no longer exists.");
                 }
             }
@@ -116,7 +116,7 @@ public class PadrefamiliaJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException {
+    public void eliminar(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -147,7 +147,7 @@ public class PadrefamiliaJpaController implements Serializable {
         }
     }
 
-    public List<Padrefamilia> findPadrefamiliaEntities() {
+    public List<Padrefamilia> listarTodosLosPadresFamilia() {
         return findPadrefamiliaEntities(true, -1, -1);
     }
 
@@ -171,7 +171,7 @@ public class PadrefamiliaJpaController implements Serializable {
         }
     }
 
-    public Padrefamilia findPadrefamilia(Integer id) {
+    public Padrefamilia buscarPadrefamilia(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Padrefamilia.class, id);
@@ -180,7 +180,7 @@ public class PadrefamiliaJpaController implements Serializable {
         }
     }
 
-    public int getPadrefamiliaCount() {
+    public int getTotalPadreFamilia() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();

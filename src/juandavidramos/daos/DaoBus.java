@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to editar this template
  */
 package juandavidramos.daos;
 
@@ -20,7 +20,7 @@ import javax.persistence.EntityManagerFactory;
 import juandavidramos.daos.exceptions.IllegalOrphanException;
 import juandavidramos.daos.exceptions.NonexistentEntityException;
 import juandavidramos.daos.exceptions.PreexistingEntityException;
-import juandavidramos.entidades.Buse;
+import juandavidramos.entidades.Bus;
 import juandavidramos.entidades.Tutor;
 import juandavidramos.entidades.Reporte;
 import juandavidramos.entidades.Estudiante;
@@ -29,9 +29,9 @@ import juandavidramos.entidades.Estudiante;
  *
  * @author juand
  */
-public class BuseJpaController implements Serializable {
+public class DaoBus implements Serializable {
 
-    public BuseJpaController(EntityManagerFactory emf) {
+    public DaoBus(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -40,7 +40,7 @@ public class BuseJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Buse buse) throws PreexistingEntityException, Exception {
+    public void agregar(Bus buse) throws PreexistingEntityException, Exception {
         if (buse.getConductorList() == null) {
             buse.setConductorList(new ArrayList<Conductor>());
         }
@@ -110,7 +110,7 @@ public class BuseJpaController implements Serializable {
                 horariosidHorarios = em.merge(horariosidHorarios);
             }
             for (Conductor conductorListConductor : buse.getConductorList()) {
-                Buse oldBusesidBusesOfConductorListConductor = conductorListConductor.getBusesidBuses();
+                Bus oldBusesidBusesOfConductorListConductor = conductorListConductor.getBusesidBuses();
                 conductorListConductor.setBusesidBuses(buse);
                 conductorListConductor = em.merge(conductorListConductor);
                 if (oldBusesidBusesOfConductorListConductor != null) {
@@ -119,7 +119,7 @@ public class BuseJpaController implements Serializable {
                 }
             }
             for (Tutor tutorListTutor : buse.getTutorList()) {
-                Buse oldBusesidBusesOfTutorListTutor = tutorListTutor.getBusesidBuses();
+                Bus oldBusesidBusesOfTutorListTutor = tutorListTutor.getBusesidBuses();
                 tutorListTutor.setBusesidBuses(buse);
                 tutorListTutor = em.merge(tutorListTutor);
                 if (oldBusesidBusesOfTutorListTutor != null) {
@@ -128,7 +128,7 @@ public class BuseJpaController implements Serializable {
                 }
             }
             for (Reporte reporteListReporte : buse.getReporteList()) {
-                Buse oldBusesidBusesOfReporteListReporte = reporteListReporte.getBusesidBuses();
+                Bus oldBusesidBusesOfReporteListReporte = reporteListReporte.getBusesidBuses();
                 reporteListReporte.setBusesidBuses(buse);
                 reporteListReporte = em.merge(reporteListReporte);
                 if (oldBusesidBusesOfReporteListReporte != null) {
@@ -137,7 +137,7 @@ public class BuseJpaController implements Serializable {
                 }
             }
             for (Estudiante estudianteListEstudiante : buse.getEstudianteList()) {
-                Buse oldBusesidBusesOfEstudianteListEstudiante = estudianteListEstudiante.getBusesidBuses();
+                Bus oldBusesidBusesOfEstudianteListEstudiante = estudianteListEstudiante.getBusesidBuses();
                 estudianteListEstudiante.setBusesidBuses(buse);
                 estudianteListEstudiante = em.merge(estudianteListEstudiante);
                 if (oldBusesidBusesOfEstudianteListEstudiante != null) {
@@ -147,7 +147,7 @@ public class BuseJpaController implements Serializable {
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findBuse(buse.getIdBuses()) != null) {
+            if (buscarBus(buse.getIdBuses()) != null) {
                 throw new PreexistingEntityException("Buse " + buse + " already exists.", ex);
             }
             throw ex;
@@ -158,12 +158,12 @@ public class BuseJpaController implements Serializable {
         }
     }
 
-    public void edit(Buse buse) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void editar(Bus buse) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Buse persistentBuse = em.find(Buse.class, buse.getIdBuses());
+            Bus persistentBuse = em.find(Bus.class, buse.getIdBuses());
             Barrio barriosidBarriosOld = persistentBuse.getBarriosidBarrios();
             Barrio barriosidBarriosNew = buse.getBarriosidBarrios();
             Colegio colegiosidColegiosOld = persistentBuse.getColegiosidColegios();
@@ -281,7 +281,7 @@ public class BuseJpaController implements Serializable {
             }
             for (Conductor conductorListNewConductor : conductorListNew) {
                 if (!conductorListOld.contains(conductorListNewConductor)) {
-                    Buse oldBusesidBusesOfConductorListNewConductor = conductorListNewConductor.getBusesidBuses();
+                    Bus oldBusesidBusesOfConductorListNewConductor = conductorListNewConductor.getBusesidBuses();
                     conductorListNewConductor.setBusesidBuses(buse);
                     conductorListNewConductor = em.merge(conductorListNewConductor);
                     if (oldBusesidBusesOfConductorListNewConductor != null && !oldBusesidBusesOfConductorListNewConductor.equals(buse)) {
@@ -292,7 +292,7 @@ public class BuseJpaController implements Serializable {
             }
             for (Tutor tutorListNewTutor : tutorListNew) {
                 if (!tutorListOld.contains(tutorListNewTutor)) {
-                    Buse oldBusesidBusesOfTutorListNewTutor = tutorListNewTutor.getBusesidBuses();
+                    Bus oldBusesidBusesOfTutorListNewTutor = tutorListNewTutor.getBusesidBuses();
                     tutorListNewTutor.setBusesidBuses(buse);
                     tutorListNewTutor = em.merge(tutorListNewTutor);
                     if (oldBusesidBusesOfTutorListNewTutor != null && !oldBusesidBusesOfTutorListNewTutor.equals(buse)) {
@@ -303,7 +303,7 @@ public class BuseJpaController implements Serializable {
             }
             for (Reporte reporteListNewReporte : reporteListNew) {
                 if (!reporteListOld.contains(reporteListNewReporte)) {
-                    Buse oldBusesidBusesOfReporteListNewReporte = reporteListNewReporte.getBusesidBuses();
+                    Bus oldBusesidBusesOfReporteListNewReporte = reporteListNewReporte.getBusesidBuses();
                     reporteListNewReporte.setBusesidBuses(buse);
                     reporteListNewReporte = em.merge(reporteListNewReporte);
                     if (oldBusesidBusesOfReporteListNewReporte != null && !oldBusesidBusesOfReporteListNewReporte.equals(buse)) {
@@ -314,7 +314,7 @@ public class BuseJpaController implements Serializable {
             }
             for (Estudiante estudianteListNewEstudiante : estudianteListNew) {
                 if (!estudianteListOld.contains(estudianteListNewEstudiante)) {
-                    Buse oldBusesidBusesOfEstudianteListNewEstudiante = estudianteListNewEstudiante.getBusesidBuses();
+                    Bus oldBusesidBusesOfEstudianteListNewEstudiante = estudianteListNewEstudiante.getBusesidBuses();
                     estudianteListNewEstudiante.setBusesidBuses(buse);
                     estudianteListNewEstudiante = em.merge(estudianteListNewEstudiante);
                     if (oldBusesidBusesOfEstudianteListNewEstudiante != null && !oldBusesidBusesOfEstudianteListNewEstudiante.equals(buse)) {
@@ -328,7 +328,7 @@ public class BuseJpaController implements Serializable {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 String id = buse.getIdBuses();
-                if (findBuse(id) == null) {
+                if (buscarBus(id) == null) {
                     throw new NonexistentEntityException("The buse with id " + id + " no longer exists.");
                 }
             }
@@ -340,14 +340,14 @@ public class BuseJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws IllegalOrphanException, NonexistentEntityException {
+    public void eliminar(String id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Buse buse;
+            Bus buse;
             try {
-                buse = em.getReference(Buse.class, id);
+                buse = em.getReference(Bus.class, id);
                 buse.getIdBuses();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The buse with id " + id + " no longer exists.", enfe);
@@ -408,19 +408,19 @@ public class BuseJpaController implements Serializable {
         }
     }
 
-    public List<Buse> findBuseEntities() {
+    public List<Bus> listarTodosLosBuses() {
         return findBuseEntities(true, -1, -1);
     }
 
-    public List<Buse> findBuseEntities(int maxResults, int firstResult) {
+    public List<Bus> findBuseEntities(int maxResults, int firstResult) {
         return findBuseEntities(false, maxResults, firstResult);
     }
 
-    private List<Buse> findBuseEntities(boolean all, int maxResults, int firstResult) {
+    private List<Bus> findBuseEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Buse.class));
+            cq.select(cq.from(Bus.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -432,20 +432,20 @@ public class BuseJpaController implements Serializable {
         }
     }
 
-    public Buse findBuse(String id) {
+    public Bus buscarBus(String id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Buse.class, id);
+            return em.find(Bus.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getBuseCount() {
+    public int getTotalBuses() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Buse> rt = cq.from(Buse.class);
+            Root<Bus> rt = cq.from(Bus.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

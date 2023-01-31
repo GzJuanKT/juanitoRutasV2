@@ -40,7 +40,7 @@ public class Conductor implements Serializable {
     private String nombreConductor;
     @JoinColumn(name = "Buses_idBuses", referencedColumnName = "idBuses")
     @ManyToOne(optional = false)
-    private Buse busesidBuses;
+    private Bus busesidBuses;
 
     public Conductor() {
     }
@@ -70,11 +70,11 @@ public class Conductor implements Serializable {
         this.nombreConductor = nombreConductor;
     }
 
-    public Buse getBusesidBuses() {
+    public Bus getBusesidBuses() {
         return busesidBuses;
     }
 
-    public void setBusesidBuses(Buse busesidBuses) {
+    public void setBusesidBuses(Bus busesidBuses) {
         this.busesidBuses = busesidBuses;
     }
 

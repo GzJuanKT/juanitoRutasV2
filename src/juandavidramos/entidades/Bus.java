@@ -25,9 +25,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "buses")
 @NamedQueries({
-    @NamedQuery(name = "Buse.findAll", query = "SELECT b FROM Buse b"),
-    @NamedQuery(name = "Buse.findByIdBuses", query = "SELECT b FROM Buse b WHERE b.idBuses = :idBuses")})
-public class Buse implements Serializable {
+    @NamedQuery(name = "Bus.findAll", query = "SELECT b FROM Bus b"),
+    @NamedQuery(name = "Bus.findByIdBuses", query = "SELECT b FROM Bus b WHERE b.idBuses = :idBuses")})
+public class Bus implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,10 +52,10 @@ public class Buse implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "busesidBuses")
     private List<Estudiante> estudianteList;
 
-    public Buse() {
+    public Bus() {
     }
 
-    public Buse(String idBuses) {
+    public Bus(String idBuses) {
         this.idBuses = idBuses;
     }
 
@@ -133,10 +133,10 @@ public class Buse implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Buse)) {
+        if (!(object instanceof Bus)) {
             return false;
         }
-        Buse other = (Buse) object;
+        Bus other = (Bus) object;
         if ((this.idBuses == null && other.idBuses != null) || (this.idBuses != null && !this.idBuses.equals(other.idBuses))) {
             return false;
         }

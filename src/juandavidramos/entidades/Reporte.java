@@ -50,7 +50,7 @@ public class Reporte implements Serializable {
     private List<Padrefamilia> padrefamiliaList;
     @JoinColumn(name = "Buses_idBuses", referencedColumnName = "idBuses")
     @ManyToOne(optional = false)
-    private Buse busesidBuses;
+    private Bus busesidBuses;
     @JoinColumn(name = "Estudiantes_idEstudiantes", referencedColumnName = "idEstudiantes")
     @ManyToOne(optional = false)
     private Estudiante estudiantesidEstudiantes;
@@ -100,11 +100,11 @@ public class Reporte implements Serializable {
         this.padrefamiliaList = padrefamiliaList;
     }
 
-    public Buse getBusesidBuses() {
+    public Bus getBusesidBuses() {
         return busesidBuses;
     }
 
-    public void setBusesidBuses(Buse busesidBuses) {
+    public void setBusesidBuses(Bus busesidBuses) {
         this.busesidBuses = busesidBuses;
     }
 

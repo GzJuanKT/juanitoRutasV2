@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to editar this template
  */
 package juandavidramos.daos;
 
@@ -9,7 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import juandavidramos.entidades.Buse;
+import juandavidramos.entidades.Bus;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -23,9 +23,9 @@ import juandavidramos.entidades.Estudiante;
  *
  * @author juand
  */
-public class BarrioJpaController implements Serializable {
+public class DaoBarrio implements Serializable {
 
-    public BarrioJpaController(EntityManagerFactory emf) {
+    public DaoBarrio(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -34,9 +34,9 @@ public class BarrioJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Barrio barrio) {
+    public void agregar(Barrio barrio) {
         if (barrio.getBuseList() == null) {
-            barrio.setBuseList(new ArrayList<Buse>());
+            barrio.setBuseList(new ArrayList<Bus>());
         }
         if (barrio.getEstudianteList() == null) {
             barrio.setEstudianteList(new ArrayList<Estudiante>());
@@ -45,8 +45,8 @@ public class BarrioJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Buse> attachedBuseList = new ArrayList<Buse>();
-            for (Buse buseListBuseToAttach : barrio.getBuseList()) {
+            List<Bus> attachedBuseList = new ArrayList<Bus>();
+            for (Bus buseListBuseToAttach : barrio.getBuseList()) {
                 buseListBuseToAttach = em.getReference(buseListBuseToAttach.getClass(), buseListBuseToAttach.getIdBuses());
                 attachedBuseList.add(buseListBuseToAttach);
             }
@@ -58,7 +58,7 @@ public class BarrioJpaController implements Serializable {
             }
             barrio.setEstudianteList(attachedEstudianteList);
             em.persist(barrio);
-            for (Buse buseListBuse : barrio.getBuseList()) {
+            for (Bus buseListBuse : barrio.getBuseList()) {
                 Barrio oldBarriosidBarriosOfBuseListBuse = buseListBuse.getBarriosidBarrios();
                 buseListBuse.setBarriosidBarrios(barrio);
                 buseListBuse = em.merge(buseListBuse);
@@ -84,18 +84,18 @@ public class BarrioJpaController implements Serializable {
         }
     }
 
-    public void edit(Barrio barrio) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void editar(Barrio barrio) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             Barrio persistentBarrio = em.find(Barrio.class, barrio.getIdBarrios());
-            List<Buse> buseListOld = persistentBarrio.getBuseList();
-            List<Buse> buseListNew = barrio.getBuseList();
+            List<Bus> buseListOld = persistentBarrio.getBuseList();
+            List<Bus> buseListNew = barrio.getBuseList();
             List<Estudiante> estudianteListOld = persistentBarrio.getEstudianteList();
             List<Estudiante> estudianteListNew = barrio.getEstudianteList();
             List<String> illegalOrphanMessages = null;
-            for (Buse buseListOldBuse : buseListOld) {
+            for (Bus buseListOldBuse : buseListOld) {
                 if (!buseListNew.contains(buseListOldBuse)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
@@ -114,8 +114,8 @@ public class BarrioJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            List<Buse> attachedBuseListNew = new ArrayList<Buse>();
-            for (Buse buseListNewBuseToAttach : buseListNew) {
+            List<Bus> attachedBuseListNew = new ArrayList<Bus>();
+            for (Bus buseListNewBuseToAttach : buseListNew) {
                 buseListNewBuseToAttach = em.getReference(buseListNewBuseToAttach.getClass(), buseListNewBuseToAttach.getIdBuses());
                 attachedBuseListNew.add(buseListNewBuseToAttach);
             }
@@ -129,7 +129,7 @@ public class BarrioJpaController implements Serializable {
             estudianteListNew = attachedEstudianteListNew;
             barrio.setEstudianteList(estudianteListNew);
             barrio = em.merge(barrio);
-            for (Buse buseListNewBuse : buseListNew) {
+            for (Bus buseListNewBuse : buseListNew) {
                 if (!buseListOld.contains(buseListNewBuse)) {
                     Barrio oldBarriosidBarriosOfBuseListNewBuse = buseListNewBuse.getBarriosidBarrios();
                     buseListNewBuse.setBarriosidBarrios(barrio);
@@ -156,7 +156,7 @@ public class BarrioJpaController implements Serializable {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 Integer id = barrio.getIdBarrios();
-                if (findBarrio(id) == null) {
+                if (buscarBarrio(id) == null) {
                     throw new NonexistentEntityException("The barrio with id " + id + " no longer exists.");
                 }
             }
@@ -168,7 +168,7 @@ public class BarrioJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void eliminar(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -181,8 +181,8 @@ public class BarrioJpaController implements Serializable {
                 throw new NonexistentEntityException("The barrio with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            List<Buse> buseListOrphanCheck = barrio.getBuseList();
-            for (Buse buseListOrphanCheckBuse : buseListOrphanCheck) {
+            List<Bus> buseListOrphanCheck = barrio.getBuseList();
+            for (Bus buseListOrphanCheckBuse : buseListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
@@ -207,7 +207,7 @@ public class BarrioJpaController implements Serializable {
         }
     }
 
-    public List<Barrio> findBarrioEntities() {
+    public List<Barrio> listarTodosLosBarrios() {
         return findBarrioEntities(true, -1, -1);
     }
 
@@ -231,16 +231,30 @@ public class BarrioJpaController implements Serializable {
         }
     }
 
-    public Barrio findBarrio(Integer id) {
+    public Barrio buscarBarrio(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Barrio.class, id);
         } finally {
             em.close();
         }
+    }   
+    
+    public int getIdBarrio(String nombreBarrio) {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("SELECT b FROM Barrio b WHERE b.barrio = :barrio")
+                    .setParameter("barrio", nombreBarrio);
+            Barrio barrio = (Barrio) q.getSingleResult();
+            return barrio.getIdBarrios();
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            em.close();
+        }
     }
 
-    public int getBarrioCount() {
+    public int getTotalBarrios() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();

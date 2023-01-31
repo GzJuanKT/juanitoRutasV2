@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to editar this template
  */
 package juandavidramos.daos;
 
@@ -9,7 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import juandavidramos.entidades.Buse;
+import juandavidramos.entidades.Bus;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -23,9 +23,9 @@ import juandavidramos.entidades.Estudiante;
  *
  * @author juand
  */
-public class ColegioJpaController implements Serializable {
+public class DaoColegio implements Serializable {
 
-    public ColegioJpaController(EntityManagerFactory emf) {
+    public DaoColegio(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -34,9 +34,9 @@ public class ColegioJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Colegio colegio) {
+    public void agregar(Colegio colegio) {
         if (colegio.getBuseList() == null) {
-            colegio.setBuseList(new ArrayList<Buse>());
+            colegio.setBuseList(new ArrayList<Bus>());
         }
         if (colegio.getEstudianteList() == null) {
             colegio.setEstudianteList(new ArrayList<Estudiante>());
@@ -45,8 +45,8 @@ public class ColegioJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Buse> attachedBuseList = new ArrayList<Buse>();
-            for (Buse buseListBuseToAttach : colegio.getBuseList()) {
+            List<Bus> attachedBuseList = new ArrayList<Bus>();
+            for (Bus buseListBuseToAttach : colegio.getBuseList()) {
                 buseListBuseToAttach = em.getReference(buseListBuseToAttach.getClass(), buseListBuseToAttach.getIdBuses());
                 attachedBuseList.add(buseListBuseToAttach);
             }
@@ -58,7 +58,7 @@ public class ColegioJpaController implements Serializable {
             }
             colegio.setEstudianteList(attachedEstudianteList);
             em.persist(colegio);
-            for (Buse buseListBuse : colegio.getBuseList()) {
+            for (Bus buseListBuse : colegio.getBuseList()) {
                 Colegio oldColegiosidColegiosOfBuseListBuse = buseListBuse.getColegiosidColegios();
                 buseListBuse.setColegiosidColegios(colegio);
                 buseListBuse = em.merge(buseListBuse);
@@ -84,18 +84,18 @@ public class ColegioJpaController implements Serializable {
         }
     }
 
-    public void edit(Colegio colegio) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void editar(Colegio colegio) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             Colegio persistentColegio = em.find(Colegio.class, colegio.getIdColegios());
-            List<Buse> buseListOld = persistentColegio.getBuseList();
-            List<Buse> buseListNew = colegio.getBuseList();
+            List<Bus> buseListOld = persistentColegio.getBuseList();
+            List<Bus> buseListNew = colegio.getBuseList();
             List<Estudiante> estudianteListOld = persistentColegio.getEstudianteList();
             List<Estudiante> estudianteListNew = colegio.getEstudianteList();
             List<String> illegalOrphanMessages = null;
-            for (Buse buseListOldBuse : buseListOld) {
+            for (Bus buseListOldBuse : buseListOld) {
                 if (!buseListNew.contains(buseListOldBuse)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
@@ -114,8 +114,8 @@ public class ColegioJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            List<Buse> attachedBuseListNew = new ArrayList<Buse>();
-            for (Buse buseListNewBuseToAttach : buseListNew) {
+            List<Bus> attachedBuseListNew = new ArrayList<Bus>();
+            for (Bus buseListNewBuseToAttach : buseListNew) {
                 buseListNewBuseToAttach = em.getReference(buseListNewBuseToAttach.getClass(), buseListNewBuseToAttach.getIdBuses());
                 attachedBuseListNew.add(buseListNewBuseToAttach);
             }
@@ -129,7 +129,7 @@ public class ColegioJpaController implements Serializable {
             estudianteListNew = attachedEstudianteListNew;
             colegio.setEstudianteList(estudianteListNew);
             colegio = em.merge(colegio);
-            for (Buse buseListNewBuse : buseListNew) {
+            for (Bus buseListNewBuse : buseListNew) {
                 if (!buseListOld.contains(buseListNewBuse)) {
                     Colegio oldColegiosidColegiosOfBuseListNewBuse = buseListNewBuse.getColegiosidColegios();
                     buseListNewBuse.setColegiosidColegios(colegio);
@@ -156,7 +156,7 @@ public class ColegioJpaController implements Serializable {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 Integer id = colegio.getIdColegios();
-                if (findColegio(id) == null) {
+                if (buscarColegio(id) == null) {
                     throw new NonexistentEntityException("The colegio with id " + id + " no longer exists.");
                 }
             }
@@ -168,7 +168,7 @@ public class ColegioJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void eliminar(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -181,8 +181,8 @@ public class ColegioJpaController implements Serializable {
                 throw new NonexistentEntityException("The colegio with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            List<Buse> buseListOrphanCheck = colegio.getBuseList();
-            for (Buse buseListOrphanCheckBuse : buseListOrphanCheck) {
+            List<Bus> buseListOrphanCheck = colegio.getBuseList();
+            for (Bus buseListOrphanCheckBuse : buseListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
@@ -207,7 +207,7 @@ public class ColegioJpaController implements Serializable {
         }
     }
 
-    public List<Colegio> findColegioEntities() {
+    public List<Colegio> listarTodosLosColegios() {
         return findColegioEntities(true, -1, -1);
     }
 
@@ -231,16 +231,30 @@ public class ColegioJpaController implements Serializable {
         }
     }
 
-    public Colegio findColegio(Integer id) {
+    public Colegio buscarColegio(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Colegio.class, id);
         } finally {
             em.close();
         }
+    }   
+    
+    public int getIdColegio(String nombreColegio) {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("SELECT c FROM Colegio c WHERE c.colegio = :colegio")
+                    .setParameter("colegio", nombreColegio);
+            Colegio colegio = (Colegio) q.getSingleResult();
+            return colegio.getIdColegios();
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            em.close();
+        }
     }
 
-    public int getColegioCount() {
+    public int getTotalColegios() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();

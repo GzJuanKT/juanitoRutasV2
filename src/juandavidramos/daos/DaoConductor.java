@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to editar this template
  */
 package juandavidramos.daos;
 
@@ -13,16 +13,16 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import juandavidramos.daos.exceptions.NonexistentEntityException;
-import juandavidramos.entidades.Buse;
+import juandavidramos.entidades.Bus;
 import juandavidramos.entidades.Conductor;
 
 /**
  *
  * @author juand
  */
-public class ConductorJpaController implements Serializable {
+public class DaoConductor implements Serializable {
 
-    public ConductorJpaController(EntityManagerFactory emf) {
+    public DaoConductor(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -31,12 +31,12 @@ public class ConductorJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Conductor conductor) {
+    public void agregar(Conductor conductor) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Buse busesidBuses = conductor.getBusesidBuses();
+            Bus busesidBuses = conductor.getBusesidBuses();
             if (busesidBuses != null) {
                 busesidBuses = em.getReference(busesidBuses.getClass(), busesidBuses.getIdBuses());
                 conductor.setBusesidBuses(busesidBuses);
@@ -54,14 +54,14 @@ public class ConductorJpaController implements Serializable {
         }
     }
 
-    public void edit(Conductor conductor) throws NonexistentEntityException, Exception {
+    public void editar(Conductor conductor) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             Conductor persistentConductor = em.find(Conductor.class, conductor.getIdConductores());
-            Buse busesidBusesOld = persistentConductor.getBusesidBuses();
-            Buse busesidBusesNew = conductor.getBusesidBuses();
+            Bus busesidBusesOld = persistentConductor.getBusesidBuses();
+            Bus busesidBusesNew = conductor.getBusesidBuses();
             if (busesidBusesNew != null) {
                 busesidBusesNew = em.getReference(busesidBusesNew.getClass(), busesidBusesNew.getIdBuses());
                 conductor.setBusesidBuses(busesidBusesNew);
@@ -80,7 +80,7 @@ public class ConductorJpaController implements Serializable {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 Integer id = conductor.getIdConductores();
-                if (findConductor(id) == null) {
+                if (buscarConductor(id) == null) {
                     throw new NonexistentEntityException("The conductor with id " + id + " no longer exists.");
                 }
             }
@@ -92,7 +92,7 @@ public class ConductorJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException {
+    public void eliminar(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -104,7 +104,7 @@ public class ConductorJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The conductor with id " + id + " no longer exists.", enfe);
             }
-            Buse busesidBuses = conductor.getBusesidBuses();
+            Bus busesidBuses = conductor.getBusesidBuses();
             if (busesidBuses != null) {
                 busesidBuses.getConductorList().remove(conductor);
                 busesidBuses = em.merge(busesidBuses);
@@ -118,7 +118,7 @@ public class ConductorJpaController implements Serializable {
         }
     }
 
-    public List<Conductor> findConductorEntities() {
+    public List<Conductor> listarTodosLosConductores() {
         return findConductorEntities(true, -1, -1);
     }
 
@@ -142,7 +142,7 @@ public class ConductorJpaController implements Serializable {
         }
     }
 
-    public Conductor findConductor(Integer id) {
+    public Conductor buscarConductor(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Conductor.class, id);
@@ -151,7 +151,7 @@ public class ConductorJpaController implements Serializable {
         }
     }
 
-    public int getConductorCount() {
+    public int getTotalConductores() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();

@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to editar this template
  */
 package juandavidramos.daos;
 
@@ -9,7 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import juandavidramos.entidades.Buse;
+import juandavidramos.entidades.Bus;
 import juandavidramos.entidades.Estudiante;
 import juandavidramos.entidades.Padrefamilia;
 import java.util.ArrayList;
@@ -25,9 +25,9 @@ import juandavidramos.entidades.Reporte;
  *
  * @author juand
  */
-public class ReporteJpaController implements Serializable {
+public class DaoReporte implements Serializable {
 
-    public ReporteJpaController(EntityManagerFactory emf) {
+    public DaoReporte(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -36,7 +36,7 @@ public class ReporteJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Reporte reporte) throws PreexistingEntityException, Exception {
+    public void agregar(Reporte reporte) throws PreexistingEntityException, Exception {
         if (reporte.getPadrefamiliaList() == null) {
             reporte.setPadrefamiliaList(new ArrayList<Padrefamilia>());
         }
@@ -44,7 +44,7 @@ public class ReporteJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Buse busesidBuses = reporte.getBusesidBuses();
+            Bus busesidBuses = reporte.getBusesidBuses();
             if (busesidBuses != null) {
                 busesidBuses = em.getReference(busesidBuses.getClass(), busesidBuses.getIdBuses());
                 reporte.setBusesidBuses(busesidBuses);
@@ -80,7 +80,7 @@ public class ReporteJpaController implements Serializable {
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findReporte(reporte.getIdReportes()) != null) {
+            if (buscarReporte(reporte.getIdReportes()) != null) {
                 throw new PreexistingEntityException("Reporte " + reporte + " already exists.", ex);
             }
             throw ex;
@@ -91,14 +91,14 @@ public class ReporteJpaController implements Serializable {
         }
     }
 
-    public void edit(Reporte reporte) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void editar(Reporte reporte) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             Reporte persistentReporte = em.find(Reporte.class, reporte.getIdReportes());
-            Buse busesidBusesOld = persistentReporte.getBusesidBuses();
-            Buse busesidBusesNew = reporte.getBusesidBuses();
+            Bus busesidBusesOld = persistentReporte.getBusesidBuses();
+            Bus busesidBusesNew = reporte.getBusesidBuses();
             Estudiante estudiantesidEstudiantesOld = persistentReporte.getEstudiantesidEstudiantes();
             Estudiante estudiantesidEstudiantesNew = reporte.getEstudiantesidEstudiantes();
             List<Padrefamilia> padrefamiliaListOld = persistentReporte.getPadrefamiliaList();
@@ -163,7 +163,7 @@ public class ReporteJpaController implements Serializable {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 String id = reporte.getIdReportes();
-                if (findReporte(id) == null) {
+                if (buscarReporte(id) == null) {
                     throw new NonexistentEntityException("The reporte with id " + id + " no longer exists.");
                 }
             }
@@ -175,7 +175,7 @@ public class ReporteJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws IllegalOrphanException, NonexistentEntityException {
+    public void eliminar(String id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -198,7 +198,7 @@ public class ReporteJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Buse busesidBuses = reporte.getBusesidBuses();
+            Bus busesidBuses = reporte.getBusesidBuses();
             if (busesidBuses != null) {
                 busesidBuses.getReporteList().remove(reporte);
                 busesidBuses = em.merge(busesidBuses);
@@ -217,7 +217,7 @@ public class ReporteJpaController implements Serializable {
         }
     }
 
-    public List<Reporte> findReporteEntities() {
+    public List<Reporte> listarTodosLosReportes() {
         return findReporteEntities(true, -1, -1);
     }
 
@@ -241,7 +241,7 @@ public class ReporteJpaController implements Serializable {
         }
     }
 
-    public Reporte findReporte(String id) {
+    public Reporte buscarReporte(String id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Reporte.class, id);
@@ -250,7 +250,7 @@ public class ReporteJpaController implements Serializable {
         }
     }
 
-    public int getReporteCount() {
+    public int getTotalReporte() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();

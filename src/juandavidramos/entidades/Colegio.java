@@ -40,7 +40,7 @@ public class Colegio implements Serializable {
     @Column(name = "colegio")
     private String colegio;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "colegiosidColegios")
-    private List<Buse> buseList;
+    private List<Bus> buseList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "colegiosidColegios")
     private List<Estudiante> estudianteList;
 
@@ -72,11 +72,11 @@ public class Colegio implements Serializable {
         this.colegio = colegio;
     }
 
-    public List<Buse> getBuseList() {
+    public List<Bus> getBuseList() {
         return buseList;
     }
 
-    public void setBuseList(List<Buse> buseList) {
+    public void setBuseList(List<Bus> buseList) {
         this.buseList = buseList;
     }
 

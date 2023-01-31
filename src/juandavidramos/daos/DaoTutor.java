@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to editar this template
  */
 package juandavidramos.daos;
 
@@ -13,16 +13,16 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import juandavidramos.daos.exceptions.NonexistentEntityException;
-import juandavidramos.entidades.Buse;
+import juandavidramos.entidades.Bus;
 import juandavidramos.entidades.Tutor;
 
 /**
  *
  * @author juand
  */
-public class TutorJpaController implements Serializable {
+public class DaoTutor implements Serializable {
 
-    public TutorJpaController(EntityManagerFactory emf) {
+    public DaoTutor(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -31,12 +31,12 @@ public class TutorJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Tutor tutor) {
+    public void agregar(Tutor tutor) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Buse busesidBuses = tutor.getBusesidBuses();
+            Bus busesidBuses = tutor.getBusesidBuses();
             if (busesidBuses != null) {
                 busesidBuses = em.getReference(busesidBuses.getClass(), busesidBuses.getIdBuses());
                 tutor.setBusesidBuses(busesidBuses);
@@ -54,14 +54,14 @@ public class TutorJpaController implements Serializable {
         }
     }
 
-    public void edit(Tutor tutor) throws NonexistentEntityException, Exception {
+    public void editar(Tutor tutor) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             Tutor persistentTutor = em.find(Tutor.class, tutor.getIdTutores());
-            Buse busesidBusesOld = persistentTutor.getBusesidBuses();
-            Buse busesidBusesNew = tutor.getBusesidBuses();
+            Bus busesidBusesOld = persistentTutor.getBusesidBuses();
+            Bus busesidBusesNew = tutor.getBusesidBuses();
             if (busesidBusesNew != null) {
                 busesidBusesNew = em.getReference(busesidBusesNew.getClass(), busesidBusesNew.getIdBuses());
                 tutor.setBusesidBuses(busesidBusesNew);
@@ -80,7 +80,7 @@ public class TutorJpaController implements Serializable {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 Integer id = tutor.getIdTutores();
-                if (findTutor(id) == null) {
+                if (buscarTutor(id) == null) {
                     throw new NonexistentEntityException("The tutor with id " + id + " no longer exists.");
                 }
             }
@@ -92,7 +92,7 @@ public class TutorJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException {
+    public void eliminar(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -104,7 +104,7 @@ public class TutorJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The tutor with id " + id + " no longer exists.", enfe);
             }
-            Buse busesidBuses = tutor.getBusesidBuses();
+            Bus busesidBuses = tutor.getBusesidBuses();
             if (busesidBuses != null) {
                 busesidBuses.getTutorList().remove(tutor);
                 busesidBuses = em.merge(busesidBuses);
@@ -118,7 +118,7 @@ public class TutorJpaController implements Serializable {
         }
     }
 
-    public List<Tutor> findTutorEntities() {
+    public List<Tutor> listarTodosLosTutores() {
         return findTutorEntities(true, -1, -1);
     }
 
@@ -142,7 +142,7 @@ public class TutorJpaController implements Serializable {
         }
     }
 
-    public Tutor findTutor(Integer id) {
+    public Tutor buscarTutor(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Tutor.class, id);
@@ -151,7 +151,7 @@ public class TutorJpaController implements Serializable {
         }
     }
 
-    public int getTutorCount() {
+    public int getTotalTutores() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();

@@ -40,7 +40,7 @@ public class Tutor implements Serializable {
     private String nombreTutor;
     @JoinColumn(name = "Buses_idBuses", referencedColumnName = "idBuses")
     @ManyToOne(optional = false)
-    private Buse busesidBuses;
+    private Bus busesidBuses;
 
     public Tutor() {
     }
@@ -70,11 +70,11 @@ public class Tutor implements Serializable {
         this.nombreTutor = nombreTutor;
     }
 
-    public Buse getBusesidBuses() {
+    public Bus getBusesidBuses() {
         return busesidBuses;
     }
 
-    public void setBusesidBuses(Buse busesidBuses) {
+    public void setBusesidBuses(Bus busesidBuses) {
         this.busesidBuses = busesidBuses;
     }
 

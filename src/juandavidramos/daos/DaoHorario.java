@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to editar this template
  */
 package juandavidramos.daos;
 
@@ -9,7 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import juandavidramos.entidades.Buse;
+import juandavidramos.entidades.Bus;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -23,9 +23,9 @@ import juandavidramos.entidades.Horario;
  *
  * @author juand
  */
-public class HorarioJpaController implements Serializable {
+public class DaoHorario implements Serializable {
 
-    public HorarioJpaController(EntityManagerFactory emf) {
+    public DaoHorario(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -34,9 +34,9 @@ public class HorarioJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Horario horario) {
+    public void agregar(Horario horario) {
         if (horario.getBuseList() == null) {
-            horario.setBuseList(new ArrayList<Buse>());
+            horario.setBuseList(new ArrayList<Bus>());
         }
         if (horario.getEstudianteList() == null) {
             horario.setEstudianteList(new ArrayList<Estudiante>());
@@ -45,8 +45,8 @@ public class HorarioJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Buse> attachedBuseList = new ArrayList<Buse>();
-            for (Buse buseListBuseToAttach : horario.getBuseList()) {
+            List<Bus> attachedBuseList = new ArrayList<Bus>();
+            for (Bus buseListBuseToAttach : horario.getBuseList()) {
                 buseListBuseToAttach = em.getReference(buseListBuseToAttach.getClass(), buseListBuseToAttach.getIdBuses());
                 attachedBuseList.add(buseListBuseToAttach);
             }
@@ -58,7 +58,7 @@ public class HorarioJpaController implements Serializable {
             }
             horario.setEstudianteList(attachedEstudianteList);
             em.persist(horario);
-            for (Buse buseListBuse : horario.getBuseList()) {
+            for (Bus buseListBuse : horario.getBuseList()) {
                 Horario oldHorariosidHorariosOfBuseListBuse = buseListBuse.getHorariosidHorarios();
                 buseListBuse.setHorariosidHorarios(horario);
                 buseListBuse = em.merge(buseListBuse);
@@ -84,18 +84,18 @@ public class HorarioJpaController implements Serializable {
         }
     }
 
-    public void edit(Horario horario) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void editar(Horario horario) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             Horario persistentHorario = em.find(Horario.class, horario.getIdHorarios());
-            List<Buse> buseListOld = persistentHorario.getBuseList();
-            List<Buse> buseListNew = horario.getBuseList();
+            List<Bus> buseListOld = persistentHorario.getBuseList();
+            List<Bus> buseListNew = horario.getBuseList();
             List<Estudiante> estudianteListOld = persistentHorario.getEstudianteList();
             List<Estudiante> estudianteListNew = horario.getEstudianteList();
             List<String> illegalOrphanMessages = null;
-            for (Buse buseListOldBuse : buseListOld) {
+            for (Bus buseListOldBuse : buseListOld) {
                 if (!buseListNew.contains(buseListOldBuse)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
@@ -114,8 +114,8 @@ public class HorarioJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            List<Buse> attachedBuseListNew = new ArrayList<Buse>();
-            for (Buse buseListNewBuseToAttach : buseListNew) {
+            List<Bus> attachedBuseListNew = new ArrayList<Bus>();
+            for (Bus buseListNewBuseToAttach : buseListNew) {
                 buseListNewBuseToAttach = em.getReference(buseListNewBuseToAttach.getClass(), buseListNewBuseToAttach.getIdBuses());
                 attachedBuseListNew.add(buseListNewBuseToAttach);
             }
@@ -129,7 +129,7 @@ public class HorarioJpaController implements Serializable {
             estudianteListNew = attachedEstudianteListNew;
             horario.setEstudianteList(estudianteListNew);
             horario = em.merge(horario);
-            for (Buse buseListNewBuse : buseListNew) {
+            for (Bus buseListNewBuse : buseListNew) {
                 if (!buseListOld.contains(buseListNewBuse)) {
                     Horario oldHorariosidHorariosOfBuseListNewBuse = buseListNewBuse.getHorariosidHorarios();
                     buseListNewBuse.setHorariosidHorarios(horario);
@@ -156,7 +156,7 @@ public class HorarioJpaController implements Serializable {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 Integer id = horario.getIdHorarios();
-                if (findHorario(id) == null) {
+                if (buscarHorario(id) == null) {
                     throw new NonexistentEntityException("The horario with id " + id + " no longer exists.");
                 }
             }
@@ -168,7 +168,7 @@ public class HorarioJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void eliminar(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -181,8 +181,8 @@ public class HorarioJpaController implements Serializable {
                 throw new NonexistentEntityException("The horario with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            List<Buse> buseListOrphanCheck = horario.getBuseList();
-            for (Buse buseListOrphanCheckBuse : buseListOrphanCheck) {
+            List<Bus> buseListOrphanCheck = horario.getBuseList();
+            for (Bus buseListOrphanCheckBuse : buseListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
@@ -207,7 +207,7 @@ public class HorarioJpaController implements Serializable {
         }
     }
 
-    public List<Horario> findHorarioEntities() {
+    public List<Horario> listarTodosLosHorarios() {
         return findHorarioEntities(true, -1, -1);
     }
 
@@ -231,16 +231,30 @@ public class HorarioJpaController implements Serializable {
         }
     }
 
-    public Horario findHorario(Integer id) {
+    public Horario buscarHorario(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Horario.class, id);
         } finally {
             em.close();
         }
+    }   
+    
+    public int getIdHorario(String nombreHorario) {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("SELECT h FROM Horario h WHERE h.jornada = :jornada")
+                    .setParameter("jornada", nombreHorario);
+            Horario horario = (Horario) q.getSingleResult();
+            return horario.getIdHorarios();
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            em.close();
+        }
     }
 
-    public int getHorarioCount() {
+    public int getTotalHorarios() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();

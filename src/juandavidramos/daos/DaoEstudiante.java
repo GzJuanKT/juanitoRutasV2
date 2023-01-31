@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to editar this template
  */
 package juandavidramos.daos;
 
@@ -10,7 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import juandavidramos.entidades.Barrio;
-import juandavidramos.entidades.Buse;
+import juandavidramos.entidades.Bus;
 import juandavidramos.entidades.Colegio;
 import juandavidramos.entidades.Horario;
 import juandavidramos.entidades.Padrefamilia;
@@ -27,9 +27,9 @@ import juandavidramos.entidades.Reporte;
  *
  * @author juand
  */
-public class EstudianteJpaController implements Serializable {
+public class DaoEstudiante implements Serializable {
 
-    public EstudianteJpaController(EntityManagerFactory emf) {
+    public DaoEstudiante(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -38,7 +38,7 @@ public class EstudianteJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Estudiante estudiante) {
+    public void agregar(Estudiante estudiante) {
         if (estudiante.getPadrefamiliaList() == null) {
             estudiante.setPadrefamiliaList(new ArrayList<Padrefamilia>());
         }
@@ -54,7 +54,7 @@ public class EstudianteJpaController implements Serializable {
                 barriosidBarrios = em.getReference(barriosidBarrios.getClass(), barriosidBarrios.getIdBarrios());
                 estudiante.setBarriosidBarrios(barriosidBarrios);
             }
-            Buse busesidBuses = estudiante.getBusesidBuses();
+            Bus busesidBuses = estudiante.getBusesidBuses();
             if (busesidBuses != null) {
                 busesidBuses = em.getReference(busesidBuses.getClass(), busesidBuses.getIdBuses());
                 estudiante.setBusesidBuses(busesidBuses);
@@ -124,7 +124,7 @@ public class EstudianteJpaController implements Serializable {
         }
     }
 
-    public void edit(Estudiante estudiante) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void editar(Estudiante estudiante) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -132,8 +132,8 @@ public class EstudianteJpaController implements Serializable {
             Estudiante persistentEstudiante = em.find(Estudiante.class, estudiante.getIdEstudiantes());
             Barrio barriosidBarriosOld = persistentEstudiante.getBarriosidBarrios();
             Barrio barriosidBarriosNew = estudiante.getBarriosidBarrios();
-            Buse busesidBusesOld = persistentEstudiante.getBusesidBuses();
-            Buse busesidBusesNew = estudiante.getBusesidBuses();
+            Bus busesidBusesOld = persistentEstudiante.getBusesidBuses();
+            Bus busesidBusesNew = estudiante.getBusesidBuses();
             Colegio colegiosidColegiosOld = persistentEstudiante.getColegiosidColegios();
             Colegio colegiosidColegiosNew = estudiante.getColegiosidColegios();
             Horario horariosidHorariosOld = persistentEstudiante.getHorariosidHorarios();
@@ -252,7 +252,7 @@ public class EstudianteJpaController implements Serializable {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 Integer id = estudiante.getIdEstudiantes();
-                if (findEstudiante(id) == null) {
+                if (buscarEstudiante(id) == null) {
                     throw new NonexistentEntityException("The estudiante with id " + id + " no longer exists.");
                 }
             }
@@ -264,7 +264,7 @@ public class EstudianteJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void eliminar(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -299,7 +299,7 @@ public class EstudianteJpaController implements Serializable {
                 barriosidBarrios.getEstudianteList().remove(estudiante);
                 barriosidBarrios = em.merge(barriosidBarrios);
             }
-            Buse busesidBuses = estudiante.getBusesidBuses();
+            Bus busesidBuses = estudiante.getBusesidBuses();
             if (busesidBuses != null) {
                 busesidBuses.getEstudianteList().remove(estudiante);
                 busesidBuses = em.merge(busesidBuses);
@@ -323,7 +323,7 @@ public class EstudianteJpaController implements Serializable {
         }
     }
 
-    public List<Estudiante> findEstudianteEntities() {
+    public List<Estudiante> listarTodosLosEstudiantes() {
         return findEstudianteEntities(true, -1, -1);
     }
 
@@ -347,7 +347,7 @@ public class EstudianteJpaController implements Serializable {
         }
     }
 
-    public Estudiante findEstudiante(Integer id) {
+    public Estudiante buscarEstudiante(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Estudiante.class, id);
@@ -356,7 +356,7 @@ public class EstudianteJpaController implements Serializable {
         }
     }
 
-    public int getEstudianteCount() {
+    public int getTotalEstudiantes() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();

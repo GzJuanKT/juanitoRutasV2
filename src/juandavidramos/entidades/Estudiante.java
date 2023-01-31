@@ -54,7 +54,7 @@ public class Estudiante implements Serializable {
     private Barrio barriosidBarrios;
     @JoinColumn(name = "Buses_idBuses", referencedColumnName = "idBuses")
     @ManyToOne(optional = false)
-    private Buse busesidBuses;
+    private Bus busesidBuses;
     @JoinColumn(name = "Colegios_idColegios", referencedColumnName = "idColegios")
     @ManyToOne(optional = false)
     private Colegio colegiosidColegios;
@@ -123,11 +123,11 @@ public class Estudiante implements Serializable {
         this.barriosidBarrios = barriosidBarrios;
     }
 
-    public Buse getBusesidBuses() {
+    public Bus getBusesidBuses() {
         return busesidBuses;
     }
 
-    public void setBusesidBuses(Buse busesidBuses) {
+    public void setBusesidBuses(Bus busesidBuses) {
         this.busesidBuses = busesidBuses;
     }
 

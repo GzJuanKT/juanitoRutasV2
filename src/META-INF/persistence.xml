@@ -7,10 +7,10 @@
     <class>juandavidramos.entidades.Padrefamilia</class>
     <class>juandavidramos.entidades.Estudiante</class>
     <class>juandavidramos.entidades.Reporte</class>
-    <class>juandavidramos.entidades.Buse</class>
     <class>juandavidramos.entidades.Horario</class>
     <class>juandavidramos.entidades.Barrio</class>
     <class>juandavidramos.entidades.Conductor</class>
+    <class>juandavidramos.entidades.Bus</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mydb?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
