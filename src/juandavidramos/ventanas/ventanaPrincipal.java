@@ -49,7 +49,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         itemMenuBuscarEstudiante = new javax.swing.JMenuItem();
         itemMenuEliminarEstudiante = new javax.swing.JMenuItem();
         itemMenuEditarEstudiante = new javax.swing.JMenuItem();
-        itemMenuBuscarRutas = new javax.swing.JMenuItem();
+        itemMenuBuscarRuta = new javax.swing.JMenuItem();
         itemMenuEliminarRuta = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -229,13 +229,13 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         });
         menuEstudiantes.add(itemMenuEditarEstudiante);
 
-        itemMenuBuscarRutas.setText("Buscar Rutas");
-        itemMenuBuscarRutas.addActionListener(new java.awt.event.ActionListener() {
+        itemMenuBuscarRuta.setText("Buscar Ruta");
+        itemMenuBuscarRuta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemMenuBuscarRutasActionPerformed(evt);
+                itemMenuBuscarRutaActionPerformed(evt);
             }
         });
-        menuEstudiantes.add(itemMenuBuscarRutas);
+        menuEstudiantes.add(itemMenuBuscarRuta);
 
         itemMenuEliminarRuta.setText("Eliminar Ruta");
         itemMenuEliminarRuta.addActionListener(new java.awt.event.ActionListener() {
@@ -314,12 +314,11 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                                             miVentana.getBotonEditar(),
                                             miVentana.getBotonEliminar()};
         
-        miVentana.getCampoRutaEscolar().setVisible(false);
+//        miVentana.getCampoRutaEscolar().setVisible(false);
         miVentana.getCampoIdPadre().setVisible(false);
         miVentana.getCampoNombrePadre().setVisible(false);
         miVentana.getCampoApellidoPadre().setVisible(false);
         
-        miVentana.getjLabel11().setVisible(false);
         miVentana.getjLabel8().setVisible(false);
         miVentana.getjLabel9().setVisible(false);
         miVentana.getjLabel10().setVisible(false);
@@ -373,7 +372,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         miVentana.setLocationRelativeTo(this);
         miVentana.setVisible(true);
     }//GEN-LAST:event_itemMenuEliminarEstudianteActionPerformed
-
+    
     private void itemMenuEditarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuEditarEstudianteActionPerformed
         // TODO add your handling code here:
         VentanaCRUDEstudiantes miVentana = new VentanaCRUDEstudiantes(this, true);        
@@ -412,27 +411,6 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         cargarDatosContratos();
     }//GEN-LAST:event_botonReportesActionPerformed
 
-    private void itemMenuBuscarRutasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuBuscarRutasActionPerformed
-        // TODO add your handling code here:
-//        VentanaCRUDBuses miVentanaBuses = new VentanaCRUDBuses();
-//        miVentanaBuses.setTitle("Buscar Ruta Escolar");
-//        
-//        JTextComponent camposDeTexto[] = new JTextComponent[] {miVentanaBuses.getCampoNombre(),
-//                                                                miVentanaBuses.getCampoApellido(),
-//                                                                miVentanaBuses.getCampoIdEstudiante()
-//        };
-//        
-//        JComboBox comboOpciones[] = new JComboBox[] {miVentanaBuses.getOpcionesHorarios(),
-//                                                     miVentanaBuses.getOpcionesBarrios(),
-//                                                     miVentanaBuses.getOpcionesColegios()};
-//        
-//        desactivarComboBox(comboOpciones);
-//        camposSoloLectura(camposDeTexto);
-//        
-//        miVentanaBuses.setLocationRelativeTo(this);
-//        miVentanaBuses.setVisible(true);
-    }//GEN-LAST:event_itemMenuBuscarRutasActionPerformed
-
     private void itemMenuEliminarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuEliminarRutaActionPerformed
         // TODO add your handling code here:
 //        VentanaCRUDBuses miVentanaBuses = new VentanaCRUDBuses();
@@ -454,6 +432,28 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 //        miVentanaBuses.setVisible(true);
 //        
     }//GEN-LAST:event_itemMenuEliminarRutaActionPerformed
+
+    private void itemMenuBuscarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuBuscarRutaActionPerformed
+//         TODO add your handling code here:    
+        VentanaCRUDBuses miVentanaBuses = new VentanaCRUDBuses();
+        miVentanaBuses.setTitle("Buscar Ruta Escolar");
+        
+        JTextComponent camposDeTexto[] = new JTextComponent[] {miVentanaBuses.getCampoNombre(),
+                                                                miVentanaBuses.getCampoApellido(),
+                                                                miVentanaBuses.getCampoIdEstudiante()
+        };
+        
+        JComboBox comboOpciones[] = new JComboBox[] {miVentanaBuses.getOpcionesHorarios(),
+                                                     miVentanaBuses.getOpcionesBarrios(),
+                                                     miVentanaBuses.getOpcionesColegios()};
+        
+        desactivarComboBox(comboOpciones);
+        camposSoloLectura(camposDeTexto);
+        
+        miVentanaBuses.setLocationRelativeTo(this);
+        miVentanaBuses.setVisible(true);
+        
+    }//GEN-LAST:event_itemMenuBuscarRutaActionPerformed
     
     
     public void desactivarBotones(JButton botones[]){
@@ -654,7 +654,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton botonReportes;
     private javax.swing.JMenuItem itemMenuAgregarEstudiante;
     private javax.swing.JMenuItem itemMenuBuscarEstudiante;
-    private javax.swing.JMenuItem itemMenuBuscarRutas;
+    private javax.swing.JMenuItem itemMenuBuscarRuta;
     private javax.swing.JMenuItem itemMenuEditarEstudiante;
     private javax.swing.JMenuItem itemMenuEliminarEstudiante;
     private javax.swing.JMenuItem itemMenuEliminarRuta;

@@ -54,12 +54,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMenuEditarEstudianteActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="itemMenuBuscarRutas">
+            <MenuItem class="javax.swing.JMenuItem" name="itemMenuBuscarRuta">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Buscar Rutas"/>
+                <Property name="text" type="java.lang.String" value="Buscar Ruta"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMenuBuscarRutasActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMenuBuscarRutaActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemMenuEliminarRuta">

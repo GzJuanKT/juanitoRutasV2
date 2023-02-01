@@ -377,7 +377,7 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
 
     private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
         // TODO add your handling code here:
-
+        
         String id = campoIdEstudiante.getText();
         
         if (id.isEmpty() == true) {
@@ -386,26 +386,30 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
         } else {
             EntityManagerFactory conexion = Persistence.createEntityManagerFactory("juanitoVersionDosPU");
             DaoEstudiante objetoDao = new DaoEstudiante(conexion);
-            
+
             try {
                 Integer numeroId = Integer.valueOf(id);
                 alguien = objetoDao.buscarEstudiante(numeroId);
-                
+
                 if (alguien == null){
                     JOptionPane.showMessageDialog(this, "El estudiante a buscar no existe.");
                     return;
                 }
                 else {
-                
+
                     Colegio colegios = alguien.getColegiosidColegios();
                     Barrio barrios = alguien.getBarriosidBarrios();
                     Horario horarios = alguien.getHorariosidHorarios();
+                    Bus buses = alguien.getBusesidBuses();
+
                     campoNombre.setText(alguien.getNombre());
-                    campoApellido.setText(alguien.getApellido());
+                    campoApellido.setText(alguien.getApellido());  
+                    campoRutaEscolar.setText(buses.getIdBuses());
+
                     opcionesHorarios.setSelectedItem(horarios.getJornada());
                     opcionesColegios.setSelectedItem(colegios.getColegio());
                     opcionesBarrios.setSelectedItem(barrios.getBarrio());
-                    
+
                     String titulo = getTitle();
                     if (titulo.indexOf("Editar") != -1){
                         campoNombre.setEditable(true);
@@ -574,6 +578,7 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
         campoIdEstudiante.setText("");
         campoNombre.setText("");
         campoApellido.setText("");
+        campoRutaEscolar.setText("");
         
         opcionesBarrios.setSelectedIndex(0);
         opcionesColegios.setSelectedIndex(0);
@@ -597,10 +602,11 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
         if (respuesta == JOptionPane.YES_OPTION) {
 
             try {
-                EntityManagerFactory conexion = Persistence.createEntityManagerFactory("TioJuanitoBusesPU");
+                EntityManagerFactory conexion = Persistence.createEntityManagerFactory("juanitoVersionDosPU");
                 DaoEstudiante daoEstu = new DaoEstudiante(conexion);
                 
                 daoEstu.eliminar(idEstudiante);
+//                eliminarBusAutomaticamente();
                 
                 int total = daoEstu.getTotalEstudiantes();
                 JOptionPane.showMessageDialog(this, "Se ha eliminado al estudiante: "+alguien.getNombre()+""+alguien.getApellido()+"\nTotal Estudiantes: "+total);
@@ -613,27 +619,27 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_botonEliminarActionPerformed
 
-//    private void eliminarBusAutomaticamente(Integer idEstudiante) {
-//        EntityManagerFactory conexion = Persistence.createEntityManagerFactory("TioJuanitoBusesPU");
-//        DaoEstudiante daoEstu = new DaoEstudiante(conexion);
-//        Estudiante estudiante = daoEstu.buscarEstudiante(idEstudiante);
-//        List<Bus> buses = estudiante.getBusList();
-//        Bus idBus = new Bus();
-//        
-//        if (!buses.isEmpty()) {
-//            Bus bus = buses.get(0);
-//            if (bus != null) {
-//                DaoBus daoBus = new DaoBus(conexion);
-//                try {
-//                    daoBus.eliminar(idBus.getPlacaBus());
-//                } catch (IllegalOrphanException ex) {
-//                    Logger.getLogger(VentanaCRUDEstudiantes.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (NonexistentEntityException ex) {
-//                    Logger.getLogger(VentanaCRUDEstudiantes.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        }
-//    }
+    private void eliminarBusAutomaticamente() {
+        Bus buses = new Bus();
+        String idPlacaBus = buses.getIdBuses(); 
+        int respuesta = JOptionPane.showConfirmDialog(this, "Seguro que desea eliminar este bus?", "Advertencia", JOptionPane.YES_NO_OPTION);
+        if (respuesta == JOptionPane.YES_OPTION){    
+            EntityManagerFactory conexion = Persistence.createEntityManagerFactory("juanitoVersionDosPU");
+            DaoBus daoBus = new DaoBus(conexion); 
+            
+            try {
+                daoBus.eliminar(idPlacaBus);  
+                int totalBuses = daoBus.getTotalBuses();
+                JOptionPane.showMessageDialog(this, "Se ha eliminado a la ruta escolar.\nTotal de buses: "+totalBuses);  
+
+            } catch (IllegalOrphanException ex) {
+                Logger.getLogger(VentanaCRUDEstudiantes.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(VentanaCRUDEstudiantes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }  
+        
+    }
     
     private void campoApellidoPadreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoApellidoPadreActionPerformed
         // TODO add your handling code here:
