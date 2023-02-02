@@ -33,7 +33,7 @@ import juandavidramos.daos.exceptions.*;
 public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
     
     private Estudiante alguien = new Estudiante();
-    
+   
 
     /**
      * Creates new form VentanaCRUDEstudiantes
@@ -70,8 +70,6 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
         opcionesColegios = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        campoApellidoPadre = new javax.swing.JTextField();
         campoNombrePadre = new javax.swing.JTextField();
         campoIdPadre = new javax.swing.JTextField();
         campoRutaEscolar = new javax.swing.JTextField();
@@ -142,14 +140,6 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
         jLabel8.setText("ID Padre");
 
         jLabel9.setText("Nombre Padre");
-
-        jLabel10.setText("Apellido Padre");
-
-        campoApellidoPadre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoApellidoPadreActionPerformed(evt);
-            }
-        });
 
         campoNombrePadre.setFont(new java.awt.Font("Dialog", 3, 12)); // NOI18N
         campoNombrePadre.addActionListener(new java.awt.event.ActionListener() {
@@ -222,15 +212,10 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(campoIdPadre, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(panelDatosLayout.createSequentialGroup()
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(campoApellidoPadre))
-                        .addGroup(panelDatosLayout.createSequentialGroup()
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(campoNombrePadre, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelDatosLayout.createSequentialGroup()
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(campoNombrePadre, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         panelDatosLayout.setVerticalGroup(
@@ -257,11 +242,7 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(campoNombrePadre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(campoApellidoPadre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(campoNombrePadre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(panelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -387,7 +368,7 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
             EntityManagerFactory conexion = Persistence.createEntityManagerFactory("juanitoVersionDosPU");
             DaoEstudiante objetoDao = new DaoEstudiante(conexion);
 
-            try {
+            try {       
                 Integer numeroId = Integer.valueOf(id);
                 alguien = objetoDao.buscarEstudiante(numeroId);
 
@@ -396,7 +377,7 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
                     return;
                 }
                 else {
-
+                    
                     Colegio colegios = alguien.getColegiosidColegios();
                     Barrio barrios = alguien.getBarriosidBarrios();
                     Horario horarios = alguien.getHorariosidHorarios();
@@ -492,6 +473,40 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
 //        
 //    }   
     
+    public void crearReporte(Estudiante estudiante, Bus bus){   
+        String id = campoIdEstudiante.getText();
+        EntityManagerFactory connection = Persistence.createEntityManagerFactory("juanitoVersionDosPU");
+        DaoEstudiante objetoDao = new DaoEstudiante(connection);   
+        Integer numeroId = Integer.valueOf(id);   
+        alguien = objetoDao.buscarEstudiante(numeroId);
+        
+        Reporte reportes = new Reporte();
+        Bus buses = alguien.getBusesidBuses();
+        var hola = alguien.getIdEstudiantes();
+        String url = "jdbc:mysql://localhost:3306/test?useSSL=false&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+      
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conexion = DriverManager.getConnection(url,"root","J@nda.1110");
+            String sqlQuery = "INSERT INTO reportes (fechaReporte, pagoDeServicio, Estudiantes_idEstudiantes, Buses_idBuses) VALUES (?,?,?,?)";
+            PreparedStatement pst = conexion.prepareStatement(sqlQuery);
+            
+            Calendar fechaCalendar = Calendar.getInstance();
+            java.sql.Date fechaSQL = new java.sql.Date(fechaCalendar.getTime().getTime());
+            
+            pst.setObject(1, fechaSQL); 
+            pst.setDouble(2, reportes.getPagoDeServicio());
+//            pst.setInt(3, reportes.getEstudiantesidEstudiantes().getIdEstudiantes());
+//            pst.setString(4, reportes.getBusesidBuses().getIdBuses());   
+            pst.setInt(3, hola);
+            pst.setString(4, buses.getIdBuses());
+            pst.executeUpdate();
+            conexion.close();
+        }catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
     private void botonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarActionPerformed
         // TODO add your handling code here:
         
@@ -544,11 +559,12 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
         int idHorario = daohorario.getIdHorario((String) nombreHorario);
         horarios = daohorario.buscarHorario(idHorario);
         
-        //--
+        //-- RECOGER DATOS DEL ESTUDIANTE
         alguien.setBarriosidBarrios(barrios);
         alguien.setColegiosidColegios(colegios);
         alguien.setHorariosidHorarios(horarios);
                     
+        //-- RECOGER DATOS DEL BUS
         DaoBus daoBus = new DaoBus(conexion);
         Bus bus = new Bus();
             
@@ -556,19 +572,62 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
         bus.setBarriosidBarrios(alguien.getBarriosidBarrios());
         bus.setColegiosidColegios(alguien.getColegiosidColegios());
         bus.setHorariosidHorarios(alguien.getHorariosidHorarios());
+        
+        //-- RECOGER DATOS DEL REPORTE
+        DaoReporte daoReporte = new DaoReporte(conexion);  
+        Reporte reportes = new Reporte();    
 
+        Calendar fechaCalendar = Calendar.getInstance();
+        java.sql.Date fechaSQL = new java.sql.Date(fechaCalendar.getTime().getTime());
+        
+        reportes.setIdReportes(Hashes.crearHashReporte());
+        reportes.setFechaReporte(fechaSQL);
+        reportes.setPagoDeServicio(100.00);
+        
+        //-- RECOGER DATOS DEL PADRE DE FAMILIA
+        Padrefamilia padreFamilia = new Padrefamilia();
+        DaoPadreFamilia daoPadreFamilia = new DaoPadreFamilia(conexion);  
+        
+        String idPadre = campoIdPadre.getText();
+        String nombrePadre = campoNombrePadre.getText();
+        
+        try {
+            Integer idPadreFamilia = Integer.valueOf(idPadre);
+            padreFamilia.setIdPadreFamilia(idPadreFamilia);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Hubo un problema con el numero de identificacion del Padre de Familia.");
+            campoIdEstudiante.requestFocus();
+            campoIdEstudiante.setSelectionColor(Color.red);
+            campoIdEstudiante.selectAll();
+            return;
+        }
+        padreFamilia.setNombrePadre(nombrePadre);
+        
+        
         try {
             daoBus.agregar(bus);
             alguien.setBusesidBuses(bus);
-            daoEstu.agregar(alguien);
+            
+            daoEstu.agregar(alguien); 
+            
+            reportes.setBusesidBuses(bus);
+            reportes.setEstudiantesidEstudiantes(alguien);
+            daoReporte.agregar(reportes); 
+            
+            padreFamilia.setEstudiantesidEstudiantes(alguien);
+            padreFamilia.setReportesidReportes(reportes);
+            daoPadreFamilia.agregar(padreFamilia);
+            
         } catch (Exception ex) {
             Logger.getLogger(VentanaCRUDEstudiantes.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         int totalEstudiantes = daoEstu.getTotalEstudiantes();
         int totalRutasEscolares = daoBus.getTotalBuses();
+        String hashReporte = reportes.getIdReportes();
         JOptionPane.showMessageDialog(this, "Se agrego el estudiante "+nombre+" "+apellido+" al sistema y al bus.\nTotal Estudiantes: "+totalEstudiantes+
-                                                        "\nTotal rutas escolares: "+totalRutasEscolares);
+                                                        "\nTotal rutas escolares: "+totalRutasEscolares+
+                                                        "\nPorfavor revise su contrato con hash: "+hashReporte);
         
         botonLimpiarActionPerformed(evt);
     }//GEN-LAST:event_botonAgregarActionPerformed
@@ -606,7 +665,6 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
                 DaoEstudiante daoEstu = new DaoEstudiante(conexion);
                 
                 daoEstu.eliminar(idEstudiante);
-//                eliminarBusAutomaticamente();
                 
                 int total = daoEstu.getTotalEstudiantes();
                 JOptionPane.showMessageDialog(this, "Se ha eliminado al estudiante: "+alguien.getNombre()+""+alguien.getApellido()+"\nTotal Estudiantes: "+total);
@@ -618,33 +676,7 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_botonEliminarActionPerformed
-
-    private void eliminarBusAutomaticamente() {
-        Bus buses = new Bus();
-        String idPlacaBus = buses.getIdBuses(); 
-        int respuesta = JOptionPane.showConfirmDialog(this, "Seguro que desea eliminar este bus?", "Advertencia", JOptionPane.YES_NO_OPTION);
-        if (respuesta == JOptionPane.YES_OPTION){    
-            EntityManagerFactory conexion = Persistence.createEntityManagerFactory("juanitoVersionDosPU");
-            DaoBus daoBus = new DaoBus(conexion); 
-            
-            try {
-                daoBus.eliminar(idPlacaBus);  
-                int totalBuses = daoBus.getTotalBuses();
-                JOptionPane.showMessageDialog(this, "Se ha eliminado a la ruta escolar.\nTotal de buses: "+totalBuses);  
-
-            } catch (IllegalOrphanException ex) {
-                Logger.getLogger(VentanaCRUDEstudiantes.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (NonexistentEntityException ex) {
-                Logger.getLogger(VentanaCRUDEstudiantes.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }  
-        
-    }
     
-    private void campoApellidoPadreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoApellidoPadreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoApellidoPadreActionPerformed
-
     private void campoNombrePadreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNombrePadreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoNombrePadreActionPerformed
@@ -781,14 +813,12 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
     private javax.swing.JButton botonEliminar;
     private javax.swing.JButton botonLimpiar;
     private javax.swing.JTextField campoApellido;
-    private javax.swing.JTextField campoApellidoPadre;
     private javax.swing.JTextField campoIdEstudiante;
     private javax.swing.JTextField campoIdPadre;
     private javax.swing.JTextField campoNombre;
     private javax.swing.JTextField campoNombrePadre;
     private javax.swing.JTextField campoRutaEscolar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -848,10 +878,6 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
         return opcionesColegios;
     }
 
-    public JTextField getCampoApellidoPadre() {
-        return campoApellidoPadre;
-    }
-
     public JTextField getCampoIdPadre() {
         return campoIdPadre;
     }
@@ -866,10 +892,6 @@ public class VentanaCRUDEstudiantes extends javax.swing.JDialog {
 
     public JLabel getjLabel11() {
         return jLabel11;
-    }
-
-    public JLabel getjLabel10() {
-        return jLabel10;
     }
 
     public JLabel getjLabel8() {

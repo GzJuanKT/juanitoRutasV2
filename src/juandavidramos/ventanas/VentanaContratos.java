@@ -26,14 +26,14 @@ import juandavidramos.entidades.*;
  *
  * @author juand
  */
-public class VentanaCRUDBuses extends javax.swing.JFrame {
+public class VentanaContratos extends javax.swing.JFrame {
 
     private Bus bus = new Bus();
     
     /**
      * Creates new form VentanaCRUDBuses
      */
-    public VentanaCRUDBuses() {
+    public VentanaContratos() {
         initComponents();
         cargarDatosOpcBarrios();
         cargarDatosOpcColegios();
@@ -393,7 +393,7 @@ public class VentanaCRUDBuses extends javax.swing.JFrame {
                 DaoBus daoBus = new DaoBus(conexion); 
                 daoBus.eliminar(idPlacaBus);
             } catch (IllegalOrphanException | NonexistentEntityException ex) {
-                Logger.getLogger(VentanaCRUDBuses.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(VentanaContratos.class.getName()).log(Level.SEVERE, null, ex);
             }
             
 //            int totalBuses = daoBus.getTotalBuses();
@@ -484,21 +484,23 @@ public class VentanaCRUDBuses extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaCRUDBuses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaContratos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaCRUDBuses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaContratos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaCRUDBuses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaContratos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaCRUDBuses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaContratos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaCRUDBuses().setVisible(true);
+                new VentanaContratos().setVisible(true);
             }
         });
     }

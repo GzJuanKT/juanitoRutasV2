@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package juandavidramos.entidades;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 /**
@@ -16,17 +14,7 @@ public class Hashes {
         String hashTransaccionReporte = crearHashReporte();
         String placaBus = crearPlacaBus();
         System.out.println("Hash de Reporte: "+hashTransaccionReporte+"\nPlaca del bus: "+placaBus);
-    }
-        
-//    public static int crearHashDeReporte(){
-//        Random random = new Random();
-//        return random.nextInt((int) Math.pow(10, 10) - 1);
-//    }
-
-//    public static int generateTenDigitNumber() {
-//        Random random = new Random();
-//        return 1000000000 + random.nextInt(100000000);
-//    }   
+    } 
     
     public static String crearHashReporte(){
         

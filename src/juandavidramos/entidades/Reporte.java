@@ -20,6 +20,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.sql.*;
+import java.util.Calendar;
 
 /**
  *
@@ -115,7 +117,7 @@ public class Reporte implements Serializable {
     public void setEstudiantesidEstudiantes(Estudiante estudiantesidEstudiantes) {
         this.estudiantesidEstudiantes = estudiantesidEstudiantes;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

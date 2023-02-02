@@ -40,6 +40,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         botonBuses = new javax.swing.JButton();
         botonEstudiantes = new javax.swing.JButton();
         botonReportes = new javax.swing.JButton();
+        botonPadresFamilia = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaDatosEstudiantes = new javax.swing.JTable();
@@ -51,6 +52,9 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         itemMenuEditarEstudiante = new javax.swing.JMenuItem();
         itemMenuBuscarRuta = new javax.swing.JMenuItem();
         itemMenuEliminarRuta = new javax.swing.JMenuItem();
+        itemMenuBuscarRuta1 = new javax.swing.JMenuItem();
+        menuEstudiantes1 = new javax.swing.JMenu();
+        itemMenuBuscarContrato = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tio Juanito's Schoolar Bus");
@@ -107,16 +111,29 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        botonPadresFamilia.setBackground(new java.awt.Color(0, 204, 204));
+        botonPadresFamilia.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        botonPadresFamilia.setText("Listar Padres de Familia");
+        botonPadresFamilia.setBorderPainted(false);
+        botonPadresFamilia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                botonPadresFamiliaMousePressed(evt);
+            }
+        });
+        botonPadresFamilia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonPadresFamiliaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(botonEstudiantes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
             .addComponent(botonBuses, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(botonReportes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(botonReportes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(botonPadresFamilia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,6 +144,8 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                 .addComponent(botonBuses, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39)
                 .addComponent(botonReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48)
+                .addComponent(botonPadresFamilia, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -245,7 +264,26 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         });
         menuEstudiantes.add(itemMenuEliminarRuta);
 
+        itemMenuBuscarRuta1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMenuBuscarRuta1ActionPerformed(evt);
+            }
+        });
+        menuEstudiantes.add(itemMenuBuscarRuta1);
+
         jMenuBar1.add(menuEstudiantes);
+
+        menuEstudiantes1.setText("Admin");
+
+        itemMenuBuscarContrato.setText("Buscar Contrato");
+        itemMenuBuscarContrato.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMenuBuscarContratoActionPerformed(evt);
+            }
+        });
+        menuEstudiantes1.add(itemMenuBuscarContrato);
+
+        jMenuBar1.add(menuEstudiantes1);
 
         setJMenuBar(jMenuBar1);
 
@@ -317,18 +355,15 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 //        miVentana.getCampoRutaEscolar().setVisible(false);
         miVentana.getCampoIdPadre().setVisible(false);
         miVentana.getCampoNombrePadre().setVisible(false);
-        miVentana.getCampoApellidoPadre().setVisible(false);
         
         miVentana.getjLabel8().setVisible(false);
         miVentana.getjLabel9().setVisible(false);
-        miVentana.getjLabel10().setVisible(false);
         
         
         JTextComponent camposDeTexto[] = new JTextComponent[] {miVentana.getCampoNombre(),
                                                                 miVentana.getCampoApellido(),
                                                                 miVentana.getCampoIdPadre(),
                                                                 miVentana.getCampoNombrePadre(),
-                                                                miVentana.getCampoApellidoPadre(), 
                                                                 miVentana.getCampoRutaEscolar()
         };
         
@@ -357,7 +392,6 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                                                                 miVentana.getCampoApellido(), 
                                                                 miVentana.getCampoIdPadre(),
                                                                 miVentana.getCampoNombrePadre(),
-                                                                miVentana.getCampoApellidoPadre(), 
                                                                 miVentana.getCampoRutaEscolar()
         };
         
@@ -385,7 +419,6 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                                                                 miVentana.getCampoApellido(),
                                                                 miVentana.getCampoIdPadre(),
                                                                 miVentana.getCampoNombrePadre(),
-                                                                miVentana.getCampoApellidoPadre(), 
                                                                 miVentana.getCampoRutaEscolar()
         };
         
@@ -413,24 +446,24 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 
     private void itemMenuEliminarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuEliminarRutaActionPerformed
         // TODO add your handling code here:
-//        VentanaCRUDBuses miVentanaBuses = new VentanaCRUDBuses();
-//        miVentanaBuses.setTitle("Eliminar Ruta Escolar"); 
-//        
-//        JTextComponent camposDeTexto[] = new JTextComponent[] {miVentanaBuses.getCampoNombre(),
-//                                                                miVentanaBuses.getCampoApellido(),
-//                                                                miVentanaBuses.getCampoIdEstudiante()
-//        };
-//        
-//        JComboBox comboOpciones[] = new JComboBox[] {miVentanaBuses.getOpcionesHorarios(),
-//                                                     miVentanaBuses.getOpcionesBarrios(),
-//                                                     miVentanaBuses.getOpcionesColegios()};
-//        
-//        desactivarComboBox(comboOpciones);
-//        camposSoloLectura(camposDeTexto);
-//        
-//        miVentanaBuses.setLocationRelativeTo(this);
-//        miVentanaBuses.setVisible(true);
-//        
+        VentanaCRUDBuses miVentanaBuses = new VentanaCRUDBuses();
+        miVentanaBuses.setTitle("Eliminar Ruta Escolar"); 
+        
+        JTextComponent camposDeTexto[] = new JTextComponent[] {miVentanaBuses.getCampoNombre(),
+                                                                miVentanaBuses.getCampoApellido(),
+                                                                miVentanaBuses.getCampoIdEstudiante()
+        };
+        
+        JComboBox comboOpciones[] = new JComboBox[] {miVentanaBuses.getOpcionesHorarios(),
+                                                     miVentanaBuses.getOpcionesBarrios(),
+                                                     miVentanaBuses.getOpcionesColegios()};
+        
+        desactivarComboBox(comboOpciones);
+        camposSoloLectura(camposDeTexto);
+        
+        miVentanaBuses.setLocationRelativeTo(this);
+        miVentanaBuses.setVisible(true);
+        
     }//GEN-LAST:event_itemMenuEliminarRutaActionPerformed
 
     private void itemMenuBuscarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuBuscarRutaActionPerformed
@@ -454,6 +487,25 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         miVentanaBuses.setVisible(true);
         
     }//GEN-LAST:event_itemMenuBuscarRutaActionPerformed
+
+    private void itemMenuBuscarRuta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuBuscarRuta1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_itemMenuBuscarRuta1ActionPerformed
+
+    private void itemMenuBuscarContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuBuscarContratoActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_itemMenuBuscarContratoActionPerformed
+
+    private void botonPadresFamiliaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonPadresFamiliaMousePressed
+        // TODO add your handling code here:
+        cargarDatosPadresFamilia();
+    }//GEN-LAST:event_botonPadresFamiliaMousePressed
+
+    private void botonPadresFamiliaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPadresFamiliaActionPerformed
+        // TODO add your handling code here:
+        cargarDatosPadresFamilia();
+    }//GEN-LAST:event_botonPadresFamiliaActionPerformed
     
     
     public void desactivarBotones(JButton botones[]){
@@ -558,7 +610,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     // ESPECIFICAR QUE CAMPOS QUIERO MOSTRAR DE LOS CONTRATOS
     
     void cargarDatosContratos(){      
-        String[] nombresColumnas = {"idReportes", "fechaReporte", "idPadreFamilia", "NombrePadre", "idEstudiantes", "idBuses", "pagoDeServicio"};
+        String[] nombresColumnas = {"HashDeReporte", "FechaDeReporte", "IdEstudiante","PlacaBus", "PagoDeServicio"};
         DefaultTableModel modeloTablaContratos = new DefaultTableModel();
         modeloTablaContratos.setColumnIdentifiers(nombresColumnas);
         tablaDatosEstudiantes.setModel(modeloTablaContratos);
@@ -569,11 +621,47 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conexion = DriverManager.getConnection(url,"root","J@nda.1110");
             Statement st = conexion.createStatement();
-            String sqlQuery = "SELECT idReportes, fechaReporte, idPadreFamilia, NombrePadre, idEstudiantes, idBuses, pagoDeServicio\n" +
+            String sqlQuery = "SELECT idReportes, fechaReporte, idEstudiantes, idBuses, pagoDeServicio\n" +
                                 "FROM mydb.reportes\n" +
-                                "INNER JOIN mydb.padrefamilia ON mydb.reportes.idReportes = mydb.padrefamilia.Reportes_idReportes\n" +
-                                "INNER JOIN mydb.estudiantes ON mydb.reportes.Estudiantes_idEstudiantes = mydb.estudiantes.idEstudiantes\n" +
-                                "INNER JOIN mydb.buses ON mydb.reportes.Buses_idBuses = mydb.buses.idBuses;";
+                                "INNER JOIN mydb.buses ON mydb.reportes.Buses_idBuses = mydb.buses.idBuses\n" +
+                                "INNER JOIN mydb.estudiantes ON mydb.reportes.Estudiantes_idEstudiantes = mydb.estudiantes.idEstudiantes;";
+            
+            ResultSet rs = st.executeQuery(sqlQuery);
+            
+            while(tablaDatosEstudiantes.getRowCount() > 0){
+                ((DefaultTableModel) tablaDatosEstudiantes.getModel()).removeRow(0);
+            }
+            
+            int col = rs.getMetaData().getColumnCount();
+            while(rs.next()){
+                
+                Object [] rows = new Object[col];
+                for(int i = 1; i <= col; i++){
+                    rows[i-1] = rs.getObject(i);
+                }
+                ((DefaultTableModel) tablaDatosEstudiantes.getModel()).insertRow(rs.getRow() -1, rows);
+            }
+            rs.close();
+            st.close();
+            
+        } catch (Exception e) {
+            
+        }
+    }
+    
+    void cargarDatosPadresFamilia(){      
+        String[] nombresColumnas = {"IdPadreFamilia", "NombrePadre", "Estudiantes_idEstudiantes","Reportes_idReportes"};
+        DefaultTableModel modeloTablaContratos = new DefaultTableModel();
+        modeloTablaContratos.setColumnIdentifiers(nombresColumnas);
+        tablaDatosEstudiantes.setModel(modeloTablaContratos);
+
+        String url = "jdbc:mysql://localhost:3306/test?useSSL=false&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conexion = DriverManager.getConnection(url,"root","J@nda.1110");
+            Statement st = conexion.createStatement();
+            String sqlQuery = "SELECT * FROM mydb.padrefamilia;";
             
             ResultSet rs = st.executeQuery(sqlQuery);
             
@@ -651,10 +739,13 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBuses;
     private javax.swing.JButton botonEstudiantes;
+    private javax.swing.JButton botonPadresFamilia;
     private javax.swing.JButton botonReportes;
     private javax.swing.JMenuItem itemMenuAgregarEstudiante;
+    private javax.swing.JMenuItem itemMenuBuscarContrato;
     private javax.swing.JMenuItem itemMenuBuscarEstudiante;
     private javax.swing.JMenuItem itemMenuBuscarRuta;
+    private javax.swing.JMenuItem itemMenuBuscarRuta1;
     private javax.swing.JMenuItem itemMenuEditarEstudiante;
     private javax.swing.JMenuItem itemMenuEliminarEstudiante;
     private javax.swing.JMenuItem itemMenuEliminarRuta;
@@ -664,6 +755,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenu menuEstudiantes;
+    private javax.swing.JMenu menuEstudiantes1;
     private javax.swing.JTable tablaDatosEstudiantes;
     // End of variables declaration//GEN-END:variables
 }
