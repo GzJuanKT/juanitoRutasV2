@@ -20,6 +20,7 @@ import juandavidramos.daos.exceptions.IllegalOrphanException;
 import juandavidramos.daos.exceptions.NonexistentEntityException;
 import juandavidramos.daos.exceptions.PreexistingEntityException;
 import juandavidramos.entidades.Reporte;
+import java.sql.*;
 
 /**
  *
@@ -249,7 +250,7 @@ public class DaoReporte implements Serializable {
             em.close();
         }
     }
-
+    
     public int getTotalReporte() {
         EntityManager em = getEntityManager();
         try {

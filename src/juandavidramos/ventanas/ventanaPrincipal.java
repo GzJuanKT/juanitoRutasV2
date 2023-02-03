@@ -4,11 +4,24 @@
  */
 package juandavidramos.ventanas;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.HeadlessException;
 import javax.swing.JFrame;
 import java.sql.*;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JTextField;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 
@@ -17,14 +30,14 @@ import javax.swing.text.JTextComponent;
  * @author juand
  */
 public class ventanaPrincipal extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form Home
      */
     public ventanaPrincipal() { 
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-    }
+    }  
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -44,6 +57,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaDatosEstudiantes = new javax.swing.JTable();
+        BotonDescargarPDF = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuEstudiantes = new javax.swing.JMenu();
         itemMenuAgregarEstudiante = new javax.swing.JMenuItem();
@@ -184,16 +198,28 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
         );
 
+        BotonDescargarPDF.setText("Descargar PDF");
+        BotonDescargarPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonDescargarPDFActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(19, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(BotonDescargarPDF)
+                        .addGap(75, 75, 75))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,7 +228,9 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(69, 69, 69))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(BotonDescargarPDF)
+                .addGap(33, 33, 33))
         );
 
         menuEstudiantes.setText("Admin");
@@ -506,8 +534,73 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         cargarDatosPadresFamilia();
     }//GEN-LAST:event_botonPadresFamiliaActionPerformed
-    
-    
+
+    private void BotonDescargarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonDescargarPDFActionPerformed
+        // TODO add your handling code here:
+        Document documento = new Document();
+        
+        try {
+//            String ruta = System.getProperty("user.home");
+            PdfWriter.getInstance(documento, new FileOutputStream("C:/Users/juand/Downloads/ReporteAPP.pdf"));     
+            Image header = Image.getInstance("C:/Users/juand/Downloads/header.png");
+            header.scaleToFit(650, 1000);
+            header.setAlignment(Chunk.ALIGN_CENTER);
+            
+            Paragraph parrafo = new Paragraph();
+            parrafo.setAlignment(Paragraph.ALIGN_CENTER);
+            parrafo.add("Formato creado por Juan David Ramos.\n\n");
+            parrafo.setFont(FontFactory.getFont("Tahoma", 18, BaseColor.DARK_GRAY));
+            parrafo.add("Contratos Registratos \n\n");
+            
+            documento.open();
+            documento.add(header);
+            documento.add(parrafo);
+            
+            PdfPTable tabla = new PdfPTable(7);    
+            tabla.addCell("Hash De Reporte");
+            tabla.addCell("Fecha De Reporte");
+            tabla.addCell("ID del Padre");
+            tabla.addCell("Nombre del Padre");   
+            tabla.addCell("Pago del Servicio"); 
+            tabla.addCell("ID del Estudiante");
+            tabla.addCell("Pago del Servicio"); 
+            
+            try {        
+                String url = "jdbc:mysql://localhost:3306/test?useSSL=false&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrieval=true";  
+                Connection cn = DriverManager.getConnection(url,"root", "J@nda.1110");
+                PreparedStatement pst = cn.prepareStatement("SELECT idReportes, fechaReporte, idPadreFamilia, NombrePadre, idEstudiantes, idBuses, pagoDeServicio\n" +
+                                                            "FROM mydb.reportes \n" +
+                                                            "INNER JOIN mydb.padreFamilia ON mydb.reportes.Estudiantes_idEstudiantes = mydb.padrefamilia.Estudiantes_idEstudiantes \n" +
+                                                            "INNER JOIN mydb.buses ON mydb.reportes.Buses_idBuses = mydb.buses.idBuses \n" +
+                                                            "INNER JOIN mydb.estudiantes ON mydb.reportes.Estudiantes_idEstudiantes = mydb.estudiantes.idEstudiantes;"); 
+                                
+                ResultSet rs = pst.executeQuery();
+                
+                if(rs.next()){
+                    
+                    do {                        
+                        tabla.addCell(rs.getString(1));
+                        tabla.addCell(rs.getString(2));
+                        tabla.addCell(rs.getString(3));
+                        tabla.addCell(rs.getString(4));
+                        tabla.addCell(rs.getString(5));
+                        tabla.addCell(rs.getString(6));
+                        tabla.addCell(rs.getString(7));
+                    } while (rs.next());
+                    documento.add(tabla);
+                }
+                
+            } catch (DocumentException | SQLException e) {
+            }
+            documento.close();
+            JOptionPane.showMessageDialog(this, "Reporte en PDF creado. Porfavor revise su carpeta de Descargas.");
+        } catch (DocumentException | HeadlessException | FileNotFoundException e) {
+            System.out.println("Problema en el PDF: "+e);
+        } catch(IOException e){
+            System.out.println("Problema en la imagen: "+e);
+        }
+    }//GEN-LAST:event_BotonDescargarPDFActionPerformed
+
     public void desactivarBotones(JButton botones[]){
         for (JButton boton : botones) {
             boton.setEnabled(false);
@@ -527,6 +620,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     }
     
     void cargarDatosEstudiantes(){    
+        BotonDescargarPDF.setVisible(false);
         String[] nombresColumnas = {"PlacaBus", "ID", "Nombre", "Apellido", "Barrio", "Jornada", "Colegio"};
         DefaultTableModel modeloTablaBuses = new DefaultTableModel();
         modeloTablaBuses.setColumnIdentifiers(nombresColumnas);
@@ -569,6 +663,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     }
     
     void cargarDatosBuses(){      
+        BotonDescargarPDF.setVisible(false);
         String[] nombresColumnas = {"PlacaBus", "IdEstudiantes", "Nombre", "Apellido"};
         DefaultTableModel modeloTablaBuses = new DefaultTableModel();
         modeloTablaBuses.setColumnIdentifiers(nombresColumnas);
@@ -609,8 +704,9 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     
     // ESPECIFICAR QUE CAMPOS QUIERO MOSTRAR DE LOS CONTRATOS
     
-    void cargarDatosContratos(){      
-        String[] nombresColumnas = {"HashDeReporte", "FechaDeReporte", "IdEstudiante","PlacaBus", "PagoDeServicio"};
+    void cargarDatosContratos(){    
+        BotonDescargarPDF.setVisible(true);
+        String[] nombresColumnas = {"HashDeReporte", "FechaDeReporte", "ID Padre","NombrePadre", "ID Estudiante", "PlacaBus", "PagoServicio"};
         DefaultTableModel modeloTablaContratos = new DefaultTableModel();
         modeloTablaContratos.setColumnIdentifiers(nombresColumnas);
         tablaDatosEstudiantes.setModel(modeloTablaContratos);
@@ -621,8 +717,9 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conexion = DriverManager.getConnection(url,"root","J@nda.1110");
             Statement st = conexion.createStatement();
-            String sqlQuery = "SELECT idReportes, fechaReporte, idEstudiantes, idBuses, pagoDeServicio\n" +
+            String sqlQuery = "SELECT idReportes, fechaReporte, idPadreFamilia, NombrePadre, idEstudiantes, idBuses, pagoDeServicio\n" +
                                 "FROM mydb.reportes\n" +
+                                "INNER JOIN mydb.padreFamilia ON mydb.reportes.Estudiantes_idEstudiantes = mydb.padrefamilia.Estudiantes_idEstudiantes\n" +
                                 "INNER JOIN mydb.buses ON mydb.reportes.Buses_idBuses = mydb.buses.idBuses\n" +
                                 "INNER JOIN mydb.estudiantes ON mydb.reportes.Estudiantes_idEstudiantes = mydb.estudiantes.idEstudiantes;";
             
@@ -649,7 +746,8 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         }
     }
     
-    void cargarDatosPadresFamilia(){      
+    void cargarDatosPadresFamilia(){  
+        BotonDescargarPDF.setVisible(false);
         String[] nombresColumnas = {"IdPadreFamilia", "NombrePadre", "Estudiantes_idEstudiantes","Reportes_idReportes"};
         DefaultTableModel modeloTablaContratos = new DefaultTableModel();
         modeloTablaContratos.setColumnIdentifiers(nombresColumnas);
@@ -737,6 +835,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     } 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotonDescargarPDF;
     private javax.swing.JButton botonBuses;
     private javax.swing.JButton botonEstudiantes;
     private javax.swing.JButton botonPadresFamilia;
